@@ -1,0 +1,30 @@
+- What is the underlying data structure?
+
+C++ containers
+  - Sequential containers
+    - Arrays
+      - Contiguous memory cells
+      - Supports random access
+    - Lists
+      - Dynamically memory
+      - Does not support random access
+    - Vectors
+      - Arrays
+      - Supports random access
+    - Deque
+      - Arrays (multiple arrays/circular arrays)
+      - Supports random access
+  - Associative containers
+    - Map
+    - Set
+    - Multimap
+    - Multiset
+  - Unordered associative containers
+    - Unordered map
+    - Unordered set
+    - Unordered multimap
+    - Unordered multiset
+  - Container adapters
+    - Stack
+    - Queue
+    - Priority queue
