@@ -1,7 +1,5 @@
-- What is the underlying data structure?
-
 C++ containers
-  - Sequential containers
+  - Sequence containers
     - Arrays
       - Contiguous memory cells
       - Supports random access
@@ -26,5 +24,11 @@ C++ containers
     - Unordered multiset
   - Container adapters
     - Stack
+      - Any sequence container; by default: deque
+      - No random access, no search, only push, pop and top
     - Queue
+      - Any sequence container; by default: deque
+      - No random access, no search, only push, pop, back, front
     - Priority queue
+      - Any sequence container; by default: vector. A heap is created
+      - Like heap but push, pop, back, front
