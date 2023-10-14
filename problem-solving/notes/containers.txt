@@ -13,11 +13,23 @@ C++ containers
       - Arrays (multiple arrays/circular arrays)
       - Supports random access
   - Associative containers
+    - Info
+      - RBT underlying
+      - Ordered
+      - insert, delete, search: O(logn)
     - Map
+      - Key-value pairs, unique keys
     - Set
+      - Unique keys
     - Multimap
+      - Key-value pairs, keys can be repeated
     - Multiset
+      - Keys, can be repeated
   - Unordered associative containers
+    - Info
+      - Hash-table underlying
+      - Insert, delete, search: O(1)
+      - Unordered
     - Unordered map
     - Unordered set
     - Unordered multimap
