@@ -1,2 +1,2 @@
-During deletion, we replace the rot with the last element in the heap to ensure the binary tree remains complete
+During deletion, we replace the root with the last element in the heap to ensure the binary tree remains complete
 and perfectly balanced
