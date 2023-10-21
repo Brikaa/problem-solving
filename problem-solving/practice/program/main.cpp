@@ -2,6 +2,7 @@
 
 const int N = 2e5 + 3;
 char program[N];
+int program_int[N];
 int sum_prefix[N];
 int max_prefix[N];
 int min_prefix[N];
@@ -57,6 +58,8 @@ int main()
     {
       int l, r;
       std::cin >> l >> r;
+      l--;
+      r--;
       int new_sum_start = sum_prefix[l - 1] + ((program[r + 1] == '+') << 1) - 1;
       int sum_start_delta = new_sum_start - sum_prefix[r + 1];
       int new_max = max_suffix[r + 1] + sum_start_delta;
