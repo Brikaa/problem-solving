@@ -37,8 +37,8 @@ int main()
     for (int i = 1; i < n; ++i)
     {
       sum_prefix[i] = sum_prefix[i - 1] + ((program[i] == '+') << 1) - 1;
-      max_prefix[0] = std::max(max_prefix[i - 1], sum_prefix[i]);
-      min_prefix[0] = std::min(min_prefix[i - 1], sum_prefix[i]);
+      max_prefix[i] = std::max(max_prefix[i - 1], sum_prefix[i]);
+      min_prefix[i] = std::min(min_prefix[i - 1], sum_prefix[i]);
     }
     while (m--)
     {
