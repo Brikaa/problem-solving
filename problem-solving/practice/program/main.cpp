@@ -23,6 +23,8 @@ int main()
     - Need:
       - sum_prefix
       - max_prefix, min_prefix: on the sum prefix
+
+    - TODO: we need to use a suffix sum for the second part
   */
   int t;
   std::cin >> t;
@@ -48,7 +50,7 @@ int main()
       int sum_start_delta = new_sum_start - sum_prefix[r + 1];
       int new_max = max_prefix[n - 1] + sum_start_delta;
       int new_min = min_prefix[n - 1] + sum_start_delta;
-      std::cout << std::max(max_prefix[l - 1], new_max) - std::min(min_prefix[l - 1], new_min) << '\n';
+      std::cout << (std::max(max_prefix[l - 1], new_max) - std::min(min_prefix[l - 1], new_min)) << '\n';
     }
   }
   return 0;
