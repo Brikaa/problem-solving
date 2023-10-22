@@ -27,6 +27,12 @@ int main()
       - sum_prefix
       - max_prefix, min_prefix: on the sum prefix
       - max_suffix, min_suffix: on the sum prefix
+
+      + + + - - + - - + - -
+      1 2 3 2 1 2 1 0 1 0-1
+      + + + x x x x x + - -
+      l = 4
+      r = 8
   */
   int t;
   std::cin >> t;
@@ -48,6 +54,8 @@ int main()
 
     max_suffix[n - 1] = sum_prefix[n - 1];
     min_suffix[n - 1] = sum_prefix[n - 1];
+    max_suffix[n] = 0;
+    min_suffix[n] = 0;
     for (int i = n - 2; i >= 0; --i)
     {
       max_suffix[i] = std::max(max_suffix[i + 1], sum_prefix[i]);
