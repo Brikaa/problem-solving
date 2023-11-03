@@ -1,6 +1,7 @@
 #include <iostream>
 
-int main() {
+int main()
+{
   double x = 6.125;
   /*
   Floating point sizes:
@@ -13,10 +14,16 @@ int main() {
         = 0 10000000001 1000100000000000000000000000000000000000000000000000
         = 0100000000011000100000000000000000000000000000000000000000000000
   */
-  long long& y = *((long long*) &x);
-  for (int i = 63; ~i; --i) {
+  long long &y = *((long long *)&x);
+  for (int i = 63; ~i; --i)
+  {
     std::cout << ((y >> i) & 1);
   }
   std::cout << '\n';
+  for (int i = 0; i < 64; ++i)
+  {
+    std::cout << ((y >> i) & 1);
+  }
+  std::cout << "\n";
   return 0;
 }
