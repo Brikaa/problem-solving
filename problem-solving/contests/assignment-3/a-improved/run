@@ -1,0 +1,7 @@
+#!/bin/bash
+g++ -Wall -Werror *.cpp || exit 1
+for i in *.in; do
+  echo ============= Test case $i =============
+  ./a.out < $i
+done
+
