@@ -1,17 +1,7 @@
 #!/bin/bash
-
-mkdir $1
-cd $1
-for i in $(seq 1 $2);
-  do touch $i.in
-done
-touch main.cpp
-echo '#!/bin/bash
 g++ -Wall -Werror main.cpp || exit 1
 for i in *.in; do
   echo ============= Test case $i =============
   ./a.out < $i
 done
-' > run
-chmod u+x run
-code . -r
+
