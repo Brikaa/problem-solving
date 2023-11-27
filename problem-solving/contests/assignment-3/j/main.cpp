@@ -4,14 +4,10 @@ xi position of free room i
 
 - Sliding window of size k + 1
 l = r - k
-mid = (l + r) / 2
-minimize max_distance on min(
-  max(rooms[mid] - rooms[l], rooms[r] - rooms[mid]),
-  max(rooms[mid + 1] - rooms[l], rooms[r] - rooms[mid + 1])
-
-
-1 6 7 8 10
-  ^
+inner_minimum_max_distance = rooms[r] - rooms[l]
+for j (l + 1) -> (r - 1)
+  minimize inner_minimum_max_distance on max(rooms[j] - rooms[l], rooms[r] - rooms[j])
+minimize minimum_max_distance on inner_minimum_max_distance
 */
 #include <cstdio>
 #include <algorithm>
@@ -30,17 +26,18 @@ int main()
     if (rooms_str[i] == '0')
       rooms[++free] = i + 1;
 
-  int max_distance = rooms[free] - rooms[1] + 15;
-  for (int i = k + 1; i <= free; ++i)
+  int minimum_max_distance = rooms[free] - rooms[1] + 15;
+  for (int r = k + 1; r <= free; ++r)
   {
-    int l = i - k;
-    int mid = (l + i) / 2;
-    max_distance = std::min(
-        max_distance,
-        std::min(
-            std::max(rooms[mid] - rooms[l], rooms[i] - rooms[mid]),
-            std::max(rooms[mid + 1] - rooms[l], rooms[i] - rooms[mid + 1])));
+    int l = r - k;
+    int inner_minimum_max_distance = rooms[r] - rooms[l];
+    for (int j = l + 1; j <= r - 1; ++j)
+    {
+      inner_minimum_max_distance = std::min(
+          inner_minimum_max_distance, std::max(rooms[j] - rooms[l], rooms[r] - rooms[j]));
+    }
+    minimum_max_distance = std::min(minimum_max_distance, inner_minimum_max_distance);
   }
-  printf("%d\n", max_distance);
+  printf("%d\n", minimum_max_distance);
   return 0;
 }
