@@ -16,12 +16,14 @@ xi position of building i
 */
 #include <cstdio>
 #include <algorithm>
+#include <vector>
 
 const int N = 2e5 + 5;
 int n;
 int houses[N];
+double towers[3];
 
-bool ok(double req)
+bool ok(double req, std::vector<double> &towers_ref)
 {
   int no_towers = 0;
   for (int i = 1; i <= n;)
@@ -30,6 +32,7 @@ bool ok(double req)
     for (; j <= n && houses[j] - houses[i] <= 2 * req; ++j)
     {
     }
+    towers_ref.push_back((houses[j - 1] + houses[i]) / 2.0);
     ++no_towers;
     i = j;
   }
@@ -46,12 +49,18 @@ int main()
   double r = houses[n] - houses[1];
   while (r - l > 1e-7)
   {
+    std::vector<double> towers_ref;
     double mid = (r + l) / 2;
-    if (ok(mid))
+    if (ok(mid, towers_ref))
+    {
       r = mid;
+      towers[0] = towers_ref[0];
+      towers[1] = towers_ref[1];
+      towers[2] = towers_ref[2];
+    }
     else
       l = mid;
   }
-  printf("%.6f\n", r);
+  printf("%.6f\n%.6f %.6f %.6f\n", r, towers[0], towers[1], towers[2]);
   return 0;
 }
