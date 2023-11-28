@@ -47,6 +47,9 @@ int main()
   std::sort(houses + 1, houses + n + 1);
   double l = 0;
   double r = houses[n] - houses[1];
+  towers[0] = houses[1];
+  towers[1] = houses[1];
+  towers[2] = houses[1];
   while (r - l > 1e-7)
   {
     std::vector<double> towers_ref;
