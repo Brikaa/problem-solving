@@ -45,7 +45,7 @@ int main()
   for (int i = 0; i < n; ++i)
     scanf("%lld", points + i);
   std::sort(points, points + n);
-  int satisfying = 0;
+  long long satisfying = 0;
   for (int i = 0; i < n; ++i)
   {
     long long x = points[i];
@@ -64,5 +64,5 @@ int main()
           (std::upper_bound(points, points + n, ceil(-x / 2.0) - 1) - points);
     }
   }
-  printf("%d\n", satisfying);
+  printf("%lld\n", satisfying);
 }
