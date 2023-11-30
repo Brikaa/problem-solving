@@ -32,6 +32,8 @@ For each number, I can get how many numbers are less than it and equal to it in 
 
 */
 #include <cstdio>
+#include <algorithm>
+
 long long n, m;
 long long target;
 
@@ -89,6 +91,23 @@ int main()
     else
       l = mid;
   }
-  printf("%lld\n", r + !has_equals);
+  if (!has_equals)
+  {
+    long long minimum_next = n * m;
+    for (int i = 1; i <= n; ++i)
+    {
+      if (r / i == 0)
+        break;
+      if (r / ((double)i) > m)
+        continue;
+      else
+      {
+        long long c = r / i + 1;
+        minimum_next = std::min(minimum_next, c * i);
+      }
+    }
+    r = minimum_next;
+  }
+  printf("%lld\n", r);
   return 0;
 }
