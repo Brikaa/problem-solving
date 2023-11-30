@@ -13,10 +13,8 @@ and so on
 22
 (e - s + 1) * (e + s - 2) / 2 + 1
 
-
-5 6 7 8
-5 + 5 + 6 + 7
-
+e = min(n, k)
+(e - s + 1) * (e + s - 2) / 2 + 1 >= n
 
 */
 #include <cstdio>
@@ -26,28 +24,21 @@ int main()
 {
   long long n, k;
   scanf("%lld%lld", &n, &k);
-  long long s = 2;
-  long long e = 2;
-  long long min_splitters = k + 5;
-  long long water_flows = (e - s + 1) * (e + s - 2) / 2 + 1;
-  while (s <= e && s <= k && e <= k)
+  long long e = std::min(n, k);
+  if ((e - 2 + 1) * (e + 2 - 2) / 2 + 1 < n)
   {
-    if (water_flows == n)
-    {
-      min_splitters = std::min(min_splitters, e - s + 1);
-      if (min_splitters == 1)
-        break;
-    }
-    if (water_flows >= n)
-      ++s;
-    else
-      ++e;
-    water_flows = (e - s + 1) * (e + s - 2) / 2 + 1;
-  }
-  if (water_flows == n)
-    min_splitters = std::min(min_splitters, e - s + 1);
-  if (min_splitters == k + 5)
     printf("-1\n");
-  else
-    printf("%lld\n", min_splitters);
+    return 0;
+  }
+  long long l = 2;
+  long long r = e + 2;
+  while (r - l > 1)
+  {
+    long long mid = (l + r) / 2;
+    if ((e - mid + 1) * (e + mid - 2) / 2 + 1 >= n)
+      l = mid;
+    else
+      r = mid;
+  }
+  printf("%lld\n", e - l + 1);
 }
