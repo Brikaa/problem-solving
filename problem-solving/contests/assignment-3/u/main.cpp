@@ -7,18 +7,24 @@ check largest stop < current number, and if possible, use the same color
 priority queue stops
 colors = 1
 for number in numbers
-  if (number <= prev)
-    stops.insert(prev)
-    target = lower_bound(stops.begin(), stops.end(), number)
-    if (target == begin)
-      colors++
-    else
-      stops.remove(target.prev())
+  stops.insert(prev)
+  target = stops.lower_bound(number)
+  if (target == begin)
+    colors++
+  else
+    stops.remove(target.prev())
 
+1 x
+2 x
+3 x
+4 x
 1 -
 2 -
 3 -
-98 -
+98 x
+4 -
+5 -
+6 -
 1 *
 2 *
 3 *
@@ -58,15 +64,12 @@ int main()
   {
     int number;
     scanf("%d", &number);
-    if (number <= prev)
-    {
-      auto target = stops.lower_bound(number);
-      if (target == stops.begin())
-        ++colors;
-      else
-        stops.erase(std::prev(target));
-      stops.insert(prev);
-    }
+    stops.insert(prev);
+    auto target = stops.lower_bound(number);
+    if (target == stops.begin())
+      ++colors;
+    else
+      stops.erase(std::prev(target));
     prev = number;
   }
   printf("%d\n", colors);
