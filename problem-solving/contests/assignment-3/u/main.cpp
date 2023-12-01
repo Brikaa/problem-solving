@@ -44,32 +44,30 @@ expected results
 */
 #include <cstdio>
 #include <set>
-#include <vector>
 
-const int N = 1e5 + 5;
 std::multiset<int> stops;
-int numbers[N];
 
 int main()
 {
   int n;
   scanf("%d", &n);
-  for (int i = 0; i < n; ++i)
-  {
-    scanf("%d", numbers + i);
-  }
+  int prev;
+  scanf("%d", &prev);
   int colors = 1;
   for (int i = 1; i < n; ++i)
   {
-    if (numbers[i] <= numbers[i - 1])
+    int number;
+    scanf("%d", &number);
+    if (number <= prev)
     {
-      auto target = std::lower_bound(stops.begin(), stops.end(), numbers[i]);
+      auto target = stops.lower_bound(number);
       if (target == stops.begin())
         ++colors;
       else
         stops.erase(std::prev(target));
-      stops.insert(numbers[i - 1]);
+      stops.insert(prev);
     }
+    prev = number;
   }
   printf("%d\n", colors);
   return 0;
