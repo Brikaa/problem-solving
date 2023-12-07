@@ -8,38 +8,28 @@ expected
 9
 10
 
+- pair possible because same combination, don't count self: nc2(freq[combination])
+- pair possible because common bits: freq[comb1] * freq[comb2]
 */
 
 #include <cstdio>
-#include <set>
-#include <unordered_map>
+#include <cmath>
 #include <string>
 #include <iostream>
 
-const int N = 5e5 + 5;
-int n;
-std::set<char> numbers[N];
-std::unordered_map<std::string, int> memo;
+int freq[1030];
 
-int get_count(const std::string &combination)
+long long nc2(int n)
 {
-  if (memo.find(combination) != memo.end())
-    return memo[combination];
-  int count = 0;
-  for (int i = 0; i < n; ++i)
+  if (n < 2)
+    return 0;
+  long long res = 1;
+  for (int i = 1; i <= 2; ++i)
   {
-    for (auto c : combination)
-    {
-      if (numbers[i].find(c) != numbers[i].end())
-      {
-        ++count;
-        break;
-      }
-    }
+    res *= n - i + 1;
+    res /= i;
   }
-  --count;
-  memo[combination] = count;
-  return count;
+  return res;
 }
 
 int main()
@@ -47,22 +37,29 @@ int main()
   std::ios_base::sync_with_stdio(false);
   std::cin.tie(0);
   std::cout.tie(0);
+  int n;
   std::cin >> n;
   for (int i = 0; i < n; ++i)
   {
     std::string number;
     std::cin >> number;
+    std::string combination = "0000000000";
     for (auto c : number)
-      numbers[i].insert(c);
+      combination[c - '0'] = '1';
+    int f = 0;
+    for (int i = 0; i <= 10; ++i)
+      if (combination[i] == '1')
+        f += pow(2, i);
+    ++freq[f];
   }
-  long long friends = 0;
-  for (int i = 0; i < n; ++i)
+  long long ans = 0;
+  for (int i = 1; i < 1024; ++i)
   {
-    std::string combination = "";
-    for (auto c : numbers[i])
-      combination += c;
-    friends += get_count(combination);
+    ans += nc2(freq[i]);
+    for (int j = i + 1; j < 1024; ++j)
+      if (i & j)
+        ans += freq[i] * freq[j];
   }
-  printf("%lld\n", friends / 2);
+  std::cout << ans << '\n';
   return 0;
 }
