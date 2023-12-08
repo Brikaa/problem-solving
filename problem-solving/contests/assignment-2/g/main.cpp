@@ -42,12 +42,12 @@ else take normal l to r
 */
 #include <cstdio>
 
-const int N = 1e5 + 5;
+const int N = 2e5 + 5;
 const int Q = N;
-int added[Q];
+long long added[Q];
 long long inverted_prefix_sum[Q];
 long long prefix_sum[N];
-int queries[Q][3];
+long long queries[Q][3];
 
 int main()
 {
@@ -67,11 +67,11 @@ int main()
       scanf("%d", &type);
       queries[i][0] = type;
       if (type == 1)
-        scanf("%d%d", &(queries[i][1]), &(queries[i][2]));
+        scanf("%lld%lld", &(queries[i][1]), &(queries[i][2]));
       else
       {
-        int number;
-        scanf("%d", &number);
+        long long number;
+        scanf("%lld", &number);
         queries[i][1] = number;
         inverted_prefix_sum[inv++] = number;
         added[i] = 1;
