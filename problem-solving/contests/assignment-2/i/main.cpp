@@ -2,9 +2,12 @@
 prime factors of least common multiple of arr
 */
 #include <cstdio>
-#include <unordered_set>
 #include <vector>
+#include <unordered_set>
 #include <algorithm>
+
+const int N = 107;
+long long numbers[N];
 
 int main()
 {
@@ -14,32 +17,32 @@ int main()
   {
     int n;
     scanf("%d", &n);
-    long long multiple = 1;
-    while (n--)
-    {
-      long long number;
-      scanf("%lld", &number);
-      multiple *= number;
-    }
+    for (int i = 0; i < n; ++i)
+      scanf("%lld", numbers + i);
     std::unordered_set<long long> prime_factors;
-    long long m = 2;
-    while (m * m <= multiple)
+    for (int i = 0; i < n; ++i)
     {
-      if (multiple % m == 0)
+      long long number = numbers[i];
+      long long m = 2;
+      while (m * m <= number)
       {
-        prime_factors.insert(m);
-        multiple /= m;
+        if (number % m == 0)
+        {
+          prime_factors.insert(m);
+          number /= m;
+        }
+        else
+          ++m;
       }
-      else
-        ++m;
+      if (number != 1)
+        prime_factors.insert(number);
     }
-    if (multiple != 1)
-      prime_factors.insert(multiple);
-    printf("Case #%d: %d\n", t, (int)prime_factors.size());
     std::vector<long long> v;
     v.insert(v.end(), prime_factors.begin(), prime_factors.end());
     std::sort(v.begin(), v.end());
+    printf("Case #%d: %d\n", t, (int)prime_factors.size());
     for (auto p : v)
       printf("%lld\n", p);
   }
+  return 0;
 }
