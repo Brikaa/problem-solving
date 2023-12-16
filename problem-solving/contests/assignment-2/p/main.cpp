@@ -5,29 +5,11 @@
 #include <utility>
 typedef unsigned int uint;
 
-const uint N = 1e5 + 5;
+const uint N = 1e5 + 1;
 bool not_primes[N];
-std::unordered_set<std::string> primes;
-std::vector<std::vector<std::pair<uint, std::string>>> memo(256, std::vector<std::pair<uint, std::string>>(256));
-uint vid;
+std::vector<std::string> primes;
 std::string string;
 
-std::string largest_prime_substring(int start, int end)
-{
-  if (start > end)
-    return "";
-  if (memo[start][end].second != "" && memo[start][end].first == vid)
-    return memo[start][end].second;
-  std::string sub = string.substr(start, end - start + 1);
-  if (primes.find(sub) != primes.end())
-    return sub;
-  std::string opt1 = largest_prime_substring(start + 1, end);
-  std::string opt2 = largest_prime_substring(start, end - 1);
-  std::string res = opt1.length() > opt2.length() ? opt1 : opt2;
-  memo[start][end].first = vid;
-  memo[start][end].second = res;
-  return res;
-}
 
 int main()
 {
@@ -44,13 +26,20 @@ int main()
   }
   for (uint i = 2; i < N; ++i)
     if (!not_primes[i])
-      primes.insert(std::to_string(i));
+      primes.push_back(std::to_string(i));
   while (true)
   {
-    ++vid;
     std::cin >> string;
     if (string == "0")
       break;
-    std::cout << largest_prime_substring(0, string.size() - 1) << '\n';
+    for (int i = primes.size() - 1; i >= 0; --i)
+    {
+      if (string.find(primes[i]) != std::string::npos)
+      {
+        std::cout << primes[i];
+        break;
+      }
+    }
+    std::cout << '\n';
   }
 }
