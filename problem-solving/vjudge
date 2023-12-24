@@ -1,9 +1,10 @@
 #!/bin/bash
 
+d="$(dirname "$(readlink -f "$0")")"
 mkdir $1
 cd $1
 for i in $(seq 1 $2);
   do touch $i.in
 done
-touch main.cpp
+cp $d/template.cpp main.cpp
 code . -r
