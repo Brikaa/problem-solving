@@ -1,5 +1,5 @@
-typedef unsigned int uint;
-typedef unsigned long long ulong;
+typedef unsigned int ui;
+typedef unsigned long long ull;
 
 int main()
 {

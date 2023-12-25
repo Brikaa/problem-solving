@@ -1,11 +1,13 @@
 /*
-64 25 75 100 50
-100 ...
+When a new element is added to ans remove its non divisors from max divisors
+96 88 3 2
+99 88 2 3
 */
 #include <cstdio>
 #include <vector>
 #include <algorithm>
 #include <cmath>
+#include <cassert>
 
 typedef unsigned int uint;
 // typedef unsigned long long ulong;
@@ -45,6 +47,8 @@ int main()
     int first_non_zero_index = -1;
     for (auto divisor : max_divisors)
     {
+      if (divisor == -1)
+        continue;
       for (uint i = 0; i < n; ++i)
       {
         if (!index_is_taken[i] && numbers[i] % divisor == 0)
@@ -53,6 +57,12 @@ int main()
           index_is_taken[i] = true;
           if (first_non_zero_index == -1 && numbers[i] != 0)
             first_non_zero_index = ans.size() - 1;
+          // remove non divisors from max divisors
+          for (uint j = 0; j < max_divisors.size(); ++j)
+          {
+            if (numbers[i] % max_divisors[j] != 0)
+              max_divisors[j] = -1;
+          }
         }
       }
     }
@@ -63,6 +73,7 @@ int main()
     }
     for (uint i = 0; i < ans.size(); ++i)
       printf("%lld%c", ans[i], " \n"[i == ans.size() - 1]);
+    assert(ans.size() == n);
   }
   return 0;
 }
