@@ -33,15 +33,18 @@ int main()
   const uint factor = 262143;
   uint n, target;
   scanf("%u%u", &n, &target);
-  if ((n == 1 && target == 0) || (n == 2 && target == 0))
+  if (n == 2 && target == 0)
     printf("NO\n");
   else if (n == 3 && target == 0)
     printf("YES\n1 2 3\n");
+  else if (n == 1 && target == 0)
+    printf("YES\n0\n");
   else
   {
     std::vector<uint> ans;
     std::unordered_set<uint> disallowed = {
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, target, (target + 1) ^ target, (target + 2) ^ (target + 1), factor};
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+        target, (target + 1) ^ target, (target + 2) ^ (target + 1), factor, factor ^ (target + 2)};
     uint no_identities = (n / 4);
     if ((n % 4 == 0 && target != 0) || (n % 4 > 0 && target == 0))
       --no_identities;
@@ -49,7 +52,7 @@ int main()
     uint no_iterations = no_identities * 2;
     while (no_iterations--)
     {
-      while (disallowed.find(b) != disallowed.end() && disallowed.find(factor - b) != disallowed.end())
+      while (disallowed.find(b) != disallowed.end() || disallowed.find(factor - b) != disallowed.end())
         ++b;
       ans.push_back(b);
       ans.push_back(factor - b);
@@ -107,8 +110,8 @@ int main()
     printf("YES\n");
     for (uint i = 0; i < ans.size(); ++i)
       printf("%u%c", ans[i], " \n"[i == ans.size() - 1]);
-    for (uint i = 0; i < ans.size(); ++i)
-      fprintf(stderr, "%u%c", ans[i], "^\n"[i == ans.size() - 1]);
+    // for (uint i = 0; i < ans.size(); ++i)
+    //   fprintf(stderr, "%u%c", ans[i], "^\n"[i == ans.size() - 1]);
   }
   return 0;
 }
