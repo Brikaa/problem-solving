@@ -7,7 +7,7 @@ typedef unsigned long long ull;
 const ui N = 23;
 ui n;
 ull capacity;
-ui weights[N];
+ull weights[N];
 
 ull solve(ull cap, ui current_index)
 {
@@ -15,9 +15,14 @@ ull solve(ull cap, ui current_index)
     return 0;
   if (weights[current_index] > cap)
     return solve(cap, current_index + 1);
-  return std::max(
-      solve(cap, current_index + 1),
-      weights[current_index] + solve(cap - weights[current_index], current_index + 1));
+  ull opt1 = solve(cap, current_index + 1);
+  ull opt2 = weights[current_index] + solve(cap - weights[current_index], current_index + 1);
+  if (opt2 >= opt1)
+  {
+    printf("%llu ", weights[current_index]);
+    return opt2;
+  }
+  return opt1;
 }
 
 int main()
@@ -26,7 +31,7 @@ int main()
   {
     for (ui i = 0; i < n; ++i)
     {
-      scanf("%u", weights + i);
+      scanf("%llu", weights + i);
     }
     printf("sum: %llu\n", solve(capacity, 0));
   }
