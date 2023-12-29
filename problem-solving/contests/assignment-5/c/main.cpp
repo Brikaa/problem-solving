@@ -39,10 +39,10 @@ void solve(ui sum)
   else if (combination_size == t)
     return;
   ui start = combination_size == 0 ? 1 : current_combination[combination_size - 1];
-  if (start * (t - combination_size) > s)
-    return;
   for (ui i = start; i <= s - sum; ++i)
   {
+    if (i * (t - combination_size) > s)
+      break;
     current_combination.push_back(i);
     solve(sum + i);
     current_combination.pop_back();
