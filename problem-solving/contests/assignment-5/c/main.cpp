@@ -2,7 +2,6 @@
  */
 #include <cstdio>
 #include <vector>
-#include <algorithm>
 #include <unordered_set>
 
 typedef unsigned int ui;
@@ -30,12 +29,12 @@ bool valid_current_combination()
 void solve(ui sum)
 {
   ui combination_size = current_combination.size();
-  if ((sum >= s && combination_size != t) || !valid_current_combination())
+  if (combination_size > t || (sum >= s && combination_size != t) || !valid_current_combination())
     return;
   if (sum == s && combination_size == t)
     combinations.push_back(current_combination);
-  ui stop = combination_size == 0 ? s : current_combination[combination_size - 1];
-  for (ui i = stop; i >= 1; --i)
+  ui start = combination_size == 0 ? 1 : current_combination[combination_size - 1];
+  for (ui i = start; i <= s - sum; ++i)
   {
     current_combination.push_back(i);
     solve(sum + i);
