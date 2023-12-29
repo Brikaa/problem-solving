@@ -29,11 +29,18 @@ bool valid_current_combination()
 void solve(ui sum)
 {
   ui combination_size = current_combination.size();
-  if (combination_size > t || (sum >= s && combination_size != t) || !valid_current_combination())
+  if ((sum >= s && combination_size < t) || !valid_current_combination()) // prunes invalid branches
     return;
-  if (sum == s && combination_size == t)
+  else if (sum == s && combination_size == t)
+  {
     combinations.push_back(current_combination);
+    return;
+  }
+  else if (combination_size == t)
+    return;
   ui start = combination_size == 0 ? 1 : current_combination[combination_size - 1];
+  if (start * (t - combination_size) > s)
+    return;
   for (ui i = start; i <= s - sum; ++i)
   {
     current_combination.push_back(i);
