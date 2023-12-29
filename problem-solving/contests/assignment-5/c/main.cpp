@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <vector>
 #include <unordered_set>
+#include <unordered_map>
 
 typedef unsigned int ui;
 typedef unsigned long long ull;
@@ -10,7 +11,7 @@ ui s, t;
 std::vector<ui> current_combination;
 std::vector<std::vector<ui>> combinations;
 const ui S = 103;
-std::vector<ui> divisors[S];
+std::unordered_map<ui, std::vector<ui>> divisors;
 
 bool valid_current_combination()
 {
