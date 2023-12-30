@@ -16,11 +16,11 @@ ui n, k;
 
 bool solve(ui water_level, ui in_right, ui current_index)
 {
+  if (current_index >= n)
+    return true;
   if (visited[in_right][current_index])
     return false;
   visited[in_right][current_index] = true;
-  if (current_index >= n)
-    return true;
   if (water_level >= current_index)
     return false;
   std::string &current_wall = in_right ? right_wall : left_wall;
