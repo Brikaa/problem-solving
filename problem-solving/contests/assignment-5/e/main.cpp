@@ -1,22 +1,35 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <queue>
 
-typedef int ui;
+typedef unsigned int ui;
 typedef unsigned long long ull;
-const ui N = 23;
+const ui N = 29;
 std::vector<std::vector<ui>> adj;
 std::vector<ui> search_space;
+std::queue<ui> bfs_queue;
 char grid[N][N];
 ui visited[N * N];
 ui vid;
 
-void dfs(ui source)
+void bfs(ui source)
 {
   visited[source] = vid;
-  for (auto neig : adj[source])
-    if (visited[neig] != vid)
-      dfs(neig);
+  bfs_queue.push(source);
+  while (!bfs_queue.empty())
+  {
+    ui elem = bfs_queue.front();
+    bfs_queue.pop();
+    for (auto neig : adj[elem])
+    {
+      if (visited[neig] != vid)
+      {
+        visited[neig] = vid;
+        bfs_queue.push(neig);
+      }
+    }
+  }
 }
 
 int main()
@@ -80,7 +93,7 @@ int main()
     {
       if (visited[node] != vid)
       {
-        dfs(node);
+        bfs(node);
         ++ans;
       }
     }
