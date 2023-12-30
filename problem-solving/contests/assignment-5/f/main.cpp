@@ -1,6 +1,19 @@
 /*
 -----x---
 -----xxxx
+
+============= Test case 1.in =============
+YES
+============= Test case 2.in =============
+NO
+============= Test case 3.in =============
+NO
+============= Test case 4.in =============
+YES
+============= Test case 5.in =============
+YES
+============= Test case 6.in =============
+YES
 */
 #include <iostream>
 #include <string>
@@ -26,27 +39,9 @@ bool solve(ui water_level, ui in_right, ui current_index)
   std::string &current_wall = in_right ? right_wall : left_wall;
   if (current_wall[current_index] == 'X')
     return false;
-
-  while (current_index != n - 1 && current_wall[current_index + 1] != 'X')
-  {
-    if (solve(water_level + 1, !in_right, current_index + k))
-      return true;
-
-    ++current_index;
-    ++water_level;
-  }
-
-  while (~current_index && current_wall[current_index] != 'X')
-  {
-    if (solve(water_level + 1, !in_right, current_index + k))
-      return true;
-
-    --current_index;
-    ++water_level;
-    if (water_level >= current_index)
-      return false;
-  }
-  return false;
+  return solve(water_level + 1, !in_right, current_index + k) ||
+         solve(water_level + 1, in_right, current_index + 1) ||
+         solve(water_level + 1, in_right, current_index - 1);
 }
 
 int main()
