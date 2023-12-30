@@ -2,18 +2,23 @@
 row * c + col = x
 
 2,1 = 2 * 4 + 1 = 9
+
+4
+3
+3
 */
 #include <iostream>
 #include <vector>
 #include <queue>
 #include <algorithm>
 #include <string>
+#include <cassert>
 
-typedef int ui;
+typedef unsigned int ui;
 typedef unsigned long long ull;
 
-const ui R = 203;
-const ui C = 203;
+const ui R = 205;
+const ui C = 205;
 char grid[R][C];
 std::vector<std::vector<ui>> adj;
 ui distances_a[R * C];
@@ -59,16 +64,28 @@ int main()
     ++vid;
     ui r, c;
     std::cin >> r >> c;
+    r += 2;
+    c += 2;
     adj.clear();
     adj.resize(r * c);
-    for (ui row = 0; row < r; ++row)
+    for (ui row = 1; row < r - 1; ++row)
     {
       std::string line;
       std::cin >> line;
-      for (ui col = 0; col < c; ++col)
+      for (ui col = 1; col < c - 1; ++col)
       {
-        grid[row][col] = line[col];
+        grid[row][col] = line[col - 1];
       }
+    }
+    for (ui row = 0; row < r; ++row)
+    {
+      grid[row][0] = '.';
+      grid[row][c - 1] = '.';
+    }
+    for (ui column = 0; column < r; ++column)
+    {
+      grid[0][column] = '.';
+      grid[r - 1][column] = '.';
     }
     ui a_source, b_source, c_source;
     // Build the graph
@@ -101,8 +118,9 @@ int main()
     ui ans = 1e9;
     for (ui point = 0; point < r * c; ++point)
     {
-      if (distances_a[point] == 0 && distances_b[point] == 0 && distances_c[point] == 0)
+      if (visited_a[point] != vid && visited_b[point] != vid && visited_c[point] != vid)
         continue;
+      assert((visited_a[point] == vid && visited_b[point] == vid && visited_c[point] == vid));
       ans = std::min(ans, std::max(std::max(distances_a[point], distances_b[point]), distances_c[point]));
     }
     std::cout << ans << '\n';
