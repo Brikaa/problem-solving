@@ -3,7 +3,6 @@
 #include <cstdio>
 #include <vector>
 #include <unordered_set>
-#include <unordered_map>
 
 typedef unsigned int ui;
 typedef unsigned long long ull;
@@ -11,7 +10,7 @@ ui s, t;
 std::vector<ui> current_combination;
 std::vector<std::vector<ui>> combinations;
 const ui S = 103;
-std::unordered_map<ui, std::vector<ui>> divisors;
+std::vector<std::vector<ui>> divisors;
 
 bool valid_current_combination()
 {
@@ -40,6 +39,8 @@ void solve(ui sum)
   else if (combination_size == t)
     return;
   ui start = combination_size == 0 ? 1 : current_combination[combination_size - 1];
+  if (start != 1)
+    ++start;
   for (ui i = start; i <= s - sum; ++i)
   {
     if (i * (t - combination_size) > s)
@@ -52,6 +53,7 @@ void solve(ui sum)
 
 int main()
 {
+  divisors.resize(S + 5);
   // Generate divisors
   for (ui i = 1; i * i <= S; ++i)
     for (ui j = i; i * j <= S; ++j)
