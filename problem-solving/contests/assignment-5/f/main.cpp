@@ -14,18 +14,11 @@ std::string right_wall;
 bool visited[2][N];
 ui n, k;
 
-// bool increase_current_index(int delta)
-// {
-//   std::cerr << current_index << ' ' << current_index + delta << '\n';
-//   current_index += delta;
-//   if (visited[in_right][current_index])
-//     return false;
-//   visited[in_right][current_index] = true;
-//   return true;
-// }
-
 bool solve(ui water_level, ui in_right, ui current_index)
 {
+  if (visited[in_right][current_index])
+    return false;
+  visited[in_right][current_index] = true;
   if (current_index >= n)
     return true;
   if (water_level >= current_index)
