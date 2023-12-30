@@ -15,7 +15,6 @@ ui current_index;
 bool in_right;
 bool visited[2][N];
 ui n, k;
-ui water_level;
 
 bool increase_current_index(int delta)
 {
@@ -27,7 +26,7 @@ bool increase_current_index(int delta)
   return true;
 }
 
-bool solve()
+bool solve(ui water_level)
 {
   if (current_index >= n)
     return true;
@@ -37,46 +36,34 @@ bool solve()
   if (current_wall[current_index] == 'X')
     return false;
 
-  bool solved = false;
-
   while (current_index != n - 1 && current_wall[current_index + 1] != 'X')
   {
     in_right = !in_right;
-    if (!increase_current_index(k))
-      return false;
-    ++water_level;
-    solved |= solve();
-    if (solved)
+    current_index += k;
+    if (solve(water_level + 1))
       return true;
     in_right = !in_right;
-    increase_current_index(-k);
-    --water_level;
+    current_index -= k;
 
-    if (!increase_current_index(1))
-      return false;
+    ++current_index;
     ++water_level;
   }
 
   while (~current_index && current_wall[current_index] != 'X')
   {
     in_right = !in_right;
-    if (!increase_current_index(k))
-      return false;
-    ++water_level;
-    solved |= solve();
-    if (solved)
+    current_index += k;
+    if (solve(water_level + 1))
       return true;
     in_right = !in_right;
-    increase_current_index(-k);
-    --water_level;
+    current_index -= k;
 
-    if (!increase_current_index(-1))
-      return false;
+    --current_index;
     ++water_level;
     if (water_level >= current_index)
       return false;
   }
-  return solved;
+  return false;
 }
 
 int main()
@@ -85,10 +72,9 @@ int main()
   std::cin.tie(0);
   std::cout.tie(0);
 
-  water_level = -1;
   std::cin >> n >> k;
   std::cin >> left_wall;
   std::cin >> right_wall;
-  std::cout << (solve() ? "YES" : "NO") << '\n';
+  std::cout << (solve(-1) ? "YES" : "NO") << '\n';
   return 0;
 }
