@@ -1,17 +1,13 @@
-/*
-- If conflict keep moving the conflict edge up opposite to a conflicting edge
-  till it becomes the out edge of a node with no conflicts
-  - Conflict: two edges coming out of a node into two different nodes
-*/
 #include <vector>
 #include <cstdio>
-#include <unordered_set>
+#include <queue>
 
 typedef unsigned int ui;
 typedef unsigned long long ull;
 const ui N = 1e5 + 5;
-std::vector<std::unordered_set<ui>> adj;
-std::vector<ui> to_fix;
+std::vector<std::vector<ui>> adj;
+ui ans[N];
+ui in_degrees[N];
 
 int main()
 {
@@ -26,48 +22,32 @@ int main()
     {
       ui managed;
       scanf("%u", &managed);
-      adj[managed].insert(mgr);
+      adj[mgr].push_back(managed);
+      ++in_degrees[managed];
     }
   }
 
+  std::queue<ui> q;
   for (ui i = 1; i <= n; ++i)
-  {
-    if (adj[i].size() > 1)
-      to_fix.push_back(i);
-  }
+    if (in_degrees[i] == 0)
+      q.push(i);
 
-  while (!to_fix.empty())
+  ui last = 0;
+  while (!q.empty())
   {
-    ui managed = to_fix.back();
-    to_fix.pop_back();
-    while (adj[managed].size() > 1)
+    ui elem = q.front();
+    q.pop();
+    ans[elem] = last;
+    last = elem;
+    for (auto neig : adj[elem])
     {
-      bool found = false;
-      for (auto manager_it = adj[managed].begin(); manager_it != adj[managed].end() && !found; manager_it++)
-      {
-        ui manager = *manager_it;
-        for (auto another_manager_it = manager_it; another_manager_it != adj[managed].end() && !found; another_manager_it++)
-        {
-          ui another_manager = *another_manager_it;
-          if (another_manager == manager)
-            continue;
-          // Try to make another_manager managed by manager
-          // manager can't be managed by another_manager
-          if (adj[manager].find(another_manager) == adj[manager].end())
-          {
-            // Does another manager have a problem?
-            adj[another_manager].insert(manager);
-            if (adj[another_manager].size() > 1)
-              to_fix.push_back(another_manager);
-            // Remove manager from adj of managed
-            adj[managed].erase(manager_it);
-            found = true;
-          }
-        }
-      }
+      --in_degrees[neig];
+      if (in_degrees[neig] == 0)
+        q.push(neig);
     }
   }
+
   for (ui i = 1; i <= n; ++i)
-    printf("%u\n", adj[i].size() == 0 ? 0 : *(adj[i].begin()));
+    printf("%u\n", ans[i]);
   return 0;
 }
