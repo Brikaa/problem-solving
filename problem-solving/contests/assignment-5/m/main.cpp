@@ -1,6 +1,7 @@
 #include <queue>
 #include <vector>
 #include <cstdio>
+#include <algorithm>
 
 typedef unsigned int ui;
 typedef unsigned long long ull;
@@ -10,28 +11,15 @@ std::vector<std::vector<ui>> dependency_adj;
 std::vector<std::vector<ui>> dependents_adj;
 std::vector<ui> zero_in_degrees;
 ui completion_times[N];
-ui min_completion_times[N];
-ui dfs_visited[N];
+ui min_start_times[N];
 ui vid;
 
-void dfs(ui source)
-{
-  dfs_visited[source] = vid;
-  min_completion_times[source] = completion_times[source];
-  for (auto neig : dependency_adj[source])
-  {
-    if (dfs_visited[neig] != vid)
-      dfs(neig);
-    min_completion_times[source] += min_completion_times[neig];
-  }
-}
-
-ui toposort(ui target, std::vector<ui> in_degrees)
+ui max_start_time(ui target, std::vector<ui> in_degrees)
 {
   std::queue<ui> q;
   for (auto elem : zero_in_degrees)
     q.push(elem);
-  ui time = completion_times[target];
+  ui time = 0;
   while (!q.empty())
   {
     ui elem = q.front();
@@ -49,6 +37,28 @@ ui toposort(ui target, std::vector<ui> in_degrees)
   return time;
 }
 
+void compute_min_start_times(std::vector<ui> in_degrees)
+{
+  std::queue<ui> q;
+  for (auto elem : zero_in_degrees)
+  {
+    min_start_times[elem] = 0;
+    q.push(elem);
+  }
+  while (!q.empty())
+  {
+    ui elem = q.front();
+    q.pop();
+    for (auto neig : dependents_adj[elem])
+    {
+      min_start_times[neig] += min_start_times[elem] + completion_times[elem];
+      --in_degrees[neig];
+      if (in_degrees[neig] == 0)
+        q.push(neig);
+    }
+  }
+}
+
 int main()
 {
   ui v, e;
@@ -62,6 +72,7 @@ int main()
     dependents_adj.clear();
     dependents_adj.resize(v);
     zero_in_degrees.clear();
+    std::fill(std::begin(min_start_times), std::end(min_start_times), 0);
 
     for (ui i = 0; i < v; ++i)
       scanf("%u", completion_times + i);
@@ -85,12 +96,10 @@ int main()
     }
 
     for (ui i = 0; i < v; ++i)
-    {
       if (in_degrees[i] == 0)
         zero_in_degrees.push_back(i);
-      if (dfs_visited[i] != vid)
-        dfs(i);
-    }
+
+    compute_min_start_times(in_degrees);
 
     ui q;
     scanf("%u", &q);
@@ -99,7 +108,7 @@ int main()
       ui x;
       scanf("%u", &x);
       --x;
-      printf("%u\n", toposort(x, in_degrees) - min_completion_times[x]);
+      printf("%u\n", max_start_time(x, in_degrees) - min_start_times[x]);
     }
     puts("");
   }
