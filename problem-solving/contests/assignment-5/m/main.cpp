@@ -11,7 +11,8 @@ std::vector<std::vector<ui>> dependency_adj;
 std::vector<std::vector<ui>> dependents_adj;
 std::vector<ui> zero_in_degrees;
 ui completion_times[N];
-ui min_start_times[N];
+ui dfs_visited[N];
+ui qid;
 ui vid;
 
 ui max_start_time(ui target, std::vector<ui> in_degrees)
@@ -37,26 +38,19 @@ ui max_start_time(ui target, std::vector<ui> in_degrees)
   return time;
 }
 
-void compute_min_start_times(std::vector<ui> in_degrees)
+ui min_start_time(ui target)
 {
-  std::queue<ui> q;
-  for (auto elem : zero_in_degrees)
+  ui time = 0;
+  dfs_visited[target] = qid;
+  for (auto neig : dependency_adj[target])
   {
-    min_start_times[elem] = 0;
-    q.push(elem);
-  }
-  while (!q.empty())
-  {
-    ui elem = q.front();
-    q.pop();
-    for (auto neig : dependents_adj[elem])
+    if (dfs_visited[neig] != qid)
     {
-      min_start_times[neig] += min_start_times[elem] + completion_times[elem];
-      --in_degrees[neig];
-      if (in_degrees[neig] == 0)
-        q.push(neig);
+      dfs_visited[neig] = qid;
+      time += completion_times[neig] + min_start_time(neig);
     }
   }
+  return time;
 }
 
 int main()
@@ -72,7 +66,6 @@ int main()
     dependents_adj.clear();
     dependents_adj.resize(v);
     zero_in_degrees.clear();
-    std::fill(std::begin(min_start_times), std::end(min_start_times), 0);
 
     for (ui i = 0; i < v; ++i)
       scanf("%u", completion_times + i);
@@ -99,16 +92,15 @@ int main()
       if (in_degrees[i] == 0)
         zero_in_degrees.push_back(i);
 
-    compute_min_start_times(in_degrees);
-
     ui q;
     scanf("%u", &q);
     for (ui i = 0; i < q; ++i)
     {
+      ++qid;
       ui x;
       scanf("%u", &x);
       --x;
-      printf("%u\n", max_start_time(x, in_degrees) - min_start_times[x]);
+      printf("%u\n", max_start_time(x, in_degrees) - min_start_time(x));
     }
     puts("");
   }
