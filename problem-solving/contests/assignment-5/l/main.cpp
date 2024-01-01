@@ -2,8 +2,8 @@
 #include <unordered_map>
 #include <algorithm>
 
-typedef unsigned int ui;
-typedef unsigned long long ull;
+typedef int ui;
+typedef long long ull;
 
 ull required;
 ull first_cap;
@@ -17,28 +17,27 @@ ull vid;
 
 ull solve(ull first, ull second)
 {
-  if (visited[first][second] == vid)
+  if (visited[first][second] == vid || first < 0 || second < 0 || first > first_cap || second > second_cap)
     return 1e9;
+  else if (first == required || second == required)
+    return 0;
   else if (visited[first][second] == vid + 1)
     return memo[first][second];
   visited[first][second] = vid;
   ull &ret = memo[first][second];
-  if (first == required || second == required)
-    ret = 0;
-  else
-  {
-    ull opt1 = first <= first - (second_cap - second) ? 1e9 : 1 + solve(first - (second_cap - second), second_cap);
-    ull opt2 = first == 0 ? 1e9 : 1 + solve(0, second);
-    ull opt3 = first == first_cap ? 1e9 : 1 + solve(first_cap, second);
-    ull min1 = std::min(opt1, std::min(opt2, opt3));
+  ull opt1 = solve(first - (second_cap - second), second_cap);
+  ull opt2 = solve(0, second);
+  ull opt3 = solve(first_cap, second);
+  ull opt4 = solve(0, second + first);
+  ull min1 = std::min(std::min(opt1, opt4), std::min(opt2, opt3));
 
-    opt1 = second <= second - (first_cap - first) ? 1e9 : 1 + solve(first_cap, second - (first_cap - first));
-    opt2 = second == 0 ? 1e9 : 1 + solve(first, 0);
-    opt3 = second == second_cap ? 1e9 : 1 + solve(first, second_cap);
-    ull min2 = std::min(opt1, std::min(opt2, opt3));
+  opt1 = solve(first_cap, second - (first_cap - first));
+  opt2 = solve(first, 0);
+  opt3 = solve(first, second_cap);
+  opt4 = solve(first + second, 0);
+  ull min2 = std::min(std::min(opt1, opt4), std::min(opt2, opt3));
 
-    ret = std::min(min1, min2);
-  }
+  ret = 1 + std::min(min1, min2);
   visited[first][second] = vid + 1;
   return ret;
 }
