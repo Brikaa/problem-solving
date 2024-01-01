@@ -1,5 +1,4 @@
 #include <queue>
-#include <deque>
 #include <vector>
 #include <cstdio>
 
@@ -29,27 +28,22 @@ void dfs(ui source)
 
 ui toposort(ui target, std::vector<ui> in_degrees)
 {
-  std::deque<ui> q;
+  std::queue<ui> q;
   for (auto elem : zero_in_degrees)
-    q.push_front(elem);
-  ui time = 0;
+    q.push(elem);
+  ui time = completion_times[target];
   while (!q.empty())
   {
     ui elem = q.front();
-    q.pop_front();
-    if (elem == target && q.size() > 0)
-    {
-      q.push_back(elem);
-      continue;
-    }
-    time += completion_times[elem];
+    q.pop();
     if (elem == target)
-      break;
+      continue;
+    time += completion_times[elem];
     for (auto neig : dependents_adj[elem])
     {
       --in_degrees[neig];
       if (in_degrees[neig] == 0)
-        q.push_front(neig);
+        q.push(neig);
     }
   }
   return time;
