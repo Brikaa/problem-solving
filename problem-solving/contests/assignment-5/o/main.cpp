@@ -25,7 +25,7 @@ void print_grid();
 
 void check_and_solve(ui cr, ui cc, ui nr, ui nc)
 {
-  if (nr > ROWS || nc > COLS || visited_cells[nr][nc] == vid)
+  if (nr >= ROWS || nc >= COLS || visited_cells[nr][nc] == vid)
     return;
   ui pip1 = grid[cr][cc];
   ui pip2 = grid[nr][nc];
