@@ -1,6 +1,5 @@
 #include <queue>
 #include <cstdio>
-#include <cassert>
 
 typedef unsigned int ui;
 typedef unsigned long long ull;
@@ -27,11 +26,6 @@ int main()
   ui n;
   while (scanf("%u", &n), n)
   {
-    if (n <= 3)
-    {
-      puts("All stations are reachable.");
-      continue;
-    }
     for (ui i = 0; i < n; ++i)
     {
       scanf("%d%d", &(points[i].x), &(points[i].y));
@@ -39,7 +33,11 @@ int main()
       points[i].y += 20;
       visited[points[i].x][points[i].y] = false;
     }
-    fprintf(stderr, "Here\n");
+    if (n <= 3)
+    {
+      puts("All stations are reachable.");
+      continue;
+    }
     std::queue<Point> q;
     visited[points[0].x][points[0].y] = true;
     q.push(points[0]);
@@ -76,7 +74,6 @@ int main()
              ((westernmost_used && points[i].y < min2.y) || (!westernmost_used && points[i].x < min2.x))))
           min2 = points[i];
       }
-      assert(min1.x != 100 && min1.y != 100 && min2.x != 100 && min2.y != 100);
       if (!visited[min1.x][min1.y])
       {
         visited[min1.x][min1.y] = true;
