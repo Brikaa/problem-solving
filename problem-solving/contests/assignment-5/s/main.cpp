@@ -8,7 +8,7 @@ typedef unsigned long long ull;
 const ui N = 105;
 std::vector<std::vector<ui>> adj;
 char grid[N][N];
-ui visited[N];
+ui visited[N * N];
 ui vid;
 ui rows;
 ui columns;
@@ -47,7 +47,6 @@ int main()
     columns = 0;
     ui ir, ic;
     std::cin >> ir >> ic;
-    std::cerr << vid << '\n';
     std::cin.ignore();
     std::string line;
 
