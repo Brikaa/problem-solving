@@ -1,0 +1,5 @@
+============= Test case 1.in =============
+All stations are reachable.
+All stations are reachable.
+There are stations that are unreachable.
+============= Test case 2.in =============
