@@ -23,6 +23,8 @@ int solve(int idx, int remaining_money, bool refund_used)
     remaining_money += 200;
     refund_used = true;
   }
+  if (remaining_money < 0 && refund_used)
+    return -1e9;
   if (idx >= n)
   {
     if (remaining_money < 0)
