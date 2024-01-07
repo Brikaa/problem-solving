@@ -12,8 +12,8 @@ const int K = 1e4 + 5;
 int k, n;
 int costs[N];
 int values[N];
-std::unordered_map<int, std::unordered_map<int, std::unordered_map<bool, int>>> memo;
-std::unordered_map<int, std::unordered_map<int, std::unordered_map<bool, int>>> visited;
+int memo[N][K][2];
+int visited[N][K][2];
 int vid;
 
 int solve(int idx, int remaining_money, bool refund_used)
