@@ -1,6 +1,6 @@
 #include <algorithm>
 #include <cstdio>
-#include <cstring>
+#include <unordered_map>
 
 typedef unsigned int ui;
 typedef unsigned long long ull;
@@ -12,23 +12,20 @@ int n;
 int oxygen[N];
 int nitrogen[N];
 int weight[N];
-int required_oxygen;
-int required_nitrogen;
-int memo[N][OX][NI];
+std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, int>>> memo;
 
-int solve(int idx, int current_oxygen, int current_nitrogen)
+int solve(int idx, int remaining_oxygen, int remaining_nitrogen)
 {
-  int &ret = memo[idx][current_oxygen][current_nitrogen];
-  if (~ret)
-    return ret;
-  if (current_nitrogen >= required_nitrogen && current_oxygen >= required_oxygen)
-    ret = 0;
-  else if (idx >= n)
-    ret = 1e9;
-  else
-    ret = std::min(
-        weight[idx] + solve(idx + 1, current_oxygen + oxygen[idx], current_nitrogen + nitrogen[idx]),
-        solve(idx + 1, current_oxygen, current_nitrogen));
+  if (remaining_oxygen <= 0 && remaining_nitrogen <= 0)
+    return 0;
+  if (idx >= n)
+    return 1e9;
+  if (memo[idx][remaining_oxygen].find(remaining_nitrogen) != memo[idx][remaining_oxygen].end())
+    return memo[idx][remaining_oxygen][remaining_nitrogen];
+  int &ret = memo[idx][remaining_oxygen][remaining_nitrogen];
+  ret = std::min(
+      weight[idx] + solve(idx + 1, remaining_oxygen - oxygen[idx], remaining_nitrogen - nitrogen[idx]),
+      solve(idx + 1, remaining_oxygen, remaining_nitrogen));
   return ret;
 }
 
@@ -38,11 +35,13 @@ int main()
   scanf("%u", &t);
   while (t--)
   {
-    std::memset(memo, -1, sizeof(memo));
+    memo.clear();
+    int required_oxygen;
+    int required_nitrogen;
     scanf("%d%d%d", &required_oxygen, &required_nitrogen, &n);
     for (int i = 0; i < n; ++i)
-      scanf("%u%u%u", oxygen + i, nitrogen + i, weight + i);
-    printf("%d\n", solve(0, 0, 0));
+      scanf("%d%d%d", oxygen + i, nitrogen + i, weight + i);
+    printf("%d\n", solve(0, required_oxygen, required_nitrogen));
   }
   return 0;
 }
