@@ -37,6 +37,24 @@ int main()
   std::cout.tie(0);
 
   std::cin >> digits;
-  std::cout << solve(0, 0, false) << '\n';
+  bool res = solve(0, 0, false);
+  std::cout << (res ? "YES" : "NO") << '\n';
+  if (res)
+  {
+    std::string ans = "";
+    ui size = digits.size();
+    ui mod = 0;
+    bool taken = false;
+    for (ui i = 0; i < size; ++i)
+    {
+      if (!solve(mod, i + 1, taken))
+      {
+        ans += digits[i];
+        mod = (mod * 10 + digits[i]) % 8;
+        taken = true;
+      }
+    }
+    std::cout << ans << '\n';
+  }
   return 0;
 }
