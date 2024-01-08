@@ -9,12 +9,25 @@ typedef unsigned int ui;
 typedef unsigned long long ull;
 std::string digits;
 
+const ui MOD = 15;
+const ui N = 1e4 + 5;
+
+bool memo[MOD][N][2];
+bool visited[MOD][N][2];
+
 bool solve(int mod, ui idx, bool taken)
 {
   bool ok = (mod == 0 && taken);
   if (ok || idx >= digits.size())
     return ok;
-  return solve(mod, idx + 1, taken) || solve((mod * 10 + digits[idx]) % 8, idx + 1, true);
+  bool &vis = visited[mod][idx][taken];
+  bool &res = memo[mod][idx][taken];
+  if (!vis)
+  {
+    vis = true;
+    res = solve(mod, idx + 1, taken) || solve((mod * 10 + digits[idx]) % 8, idx + 1, true);
+  }
+  return res;
 }
 
 int main()
